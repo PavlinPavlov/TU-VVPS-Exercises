@@ -3,6 +3,9 @@ package tu.vvps.exc.view;
 import tu.vvps.exc.TimeZoneService;
 import tu.vvps.exc.dao.StaticTimeZoneDAO;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class Menu {
@@ -35,8 +38,17 @@ public class Menu {
                 inputCityAndTimeZone();
             case 2:
                 calculateDifference();
+            case 4:
+                calculateAge();
 
         }
+    }
+
+    private void calculateAge() {
+        System.out.println("Enter Birthday. Example 1998-01-01");
+        String input = scanner.nextLine();
+        LocalDate birthday = LocalDate.parse(input);
+        System.out.println(ChronoUnit.YEARS.between(birthday, LocalDate.now()));
     }
 
     private void calculateDifference() {
