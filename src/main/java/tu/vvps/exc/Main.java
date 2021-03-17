@@ -1,20 +1,19 @@
 package tu.vvps.exc;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import tu.vvps.exc.dao.StaticTimeZoneDAO;
+import tu.vvps.exc.view.Menu;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        Logger logger = LoggerFactory.getLogger(Main.class);
+    public static void main(String[] args) {
 
-        TimeZoneService timeZoneService = TimeZoneService.getInstance();
-        StaticTimeZoneDAO zoneDAO = StaticTimeZoneDAO.getInstance();
 
-        zoneDAO.setZone("Mexico_City", "America");
+        Menu menu = new Menu(new Scanner(System.in));
 
-        System.out.println(timeZoneService.getByCity("Mexico_City"));
+        do {
+            menu.printMenu();
+            menu.executeChoice();
+        } while (true);
     }
 }

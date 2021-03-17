@@ -11,6 +11,10 @@ import tu.vvps.exc.dao.StaticTimeZoneDAO;
 import tu.vvps.exc.model.TimeZoneRequestDTO;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 public class TimeZoneService {
 
@@ -25,19 +29,28 @@ public class TimeZoneService {
 
     public TimeZoneRequestDTO getByCity(String city) {
 
-        if (city.contains("/")) {
+        String zoneFromCache = StaticTimeZoneDAO.getInstance().getZoneByCity(city);
+        String requestParameter = "";
 
-            return getByCityFromAPI(city);
-
-        } else if (!"".equals(StaticTimeZoneDAO.getInstance().getZoneByCity(city))) {
-
-            String userEnteredZone = StaticTimeZoneDAO.getInstance().getZoneByCity(city);
-            return getByCityFromAPI(String.format("%s/%s", userEnteredZone, city));
-
-        } else {
-            System.out.println("Error 1");
-            return null;
+        if (!"".equals(zoneFromCache)) {
+            requestParameter = String.format("%s/%s", zoneFromCache, city);
+        } else if (city.contains("/")) {
+            requestParameter = city;
         }
+
+        return getByCityFromAPI(requestParameter);
+    }
+
+    public long calculateDifferenceInMinutes(String firstCity, String secondCity) {
+        ZoneOffset firstCityOffset = ZoneOffset.of(getByCity(firstCity).getUtcOffset());
+        ZoneOffset secondCityOffset = ZoneOffset.of(getByCity(secondCity).getUtcOffset());
+
+        LocalDateTime referenceTime = LocalDateTime.now();
+
+        OffsetDateTime firstCityTime = OffsetDateTime.of(referenceTime, firstCityOffset);
+        OffsetDateTime secondCityTime = OffsetDateTime.of(referenceTime, secondCityOffset);
+
+        return ChronoUnit.MINUTES.between(firstCityTime, secondCityTime);
     }
 
     public TimeZoneRequestDTO getByCityFromAPI(String city) {
