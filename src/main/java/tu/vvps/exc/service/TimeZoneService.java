@@ -1,4 +1,4 @@
-package tu.vvps.exc;
+package tu.vvps.exc.service;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
