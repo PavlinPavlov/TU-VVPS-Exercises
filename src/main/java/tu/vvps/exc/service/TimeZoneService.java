@@ -20,7 +20,10 @@ public class TimeZoneService {
 
     private static final String API_URL = "http://worldtimeapi.org/api/timezone/";
 
+    private final StaticTimeZoneDAO staticTimeZoneDAO;
+
     private TimeZoneService() {
+        staticTimeZoneDAO = StaticTimeZoneDAO.getInstance();
     }
 
     public static TimeZoneService getInstance() {
@@ -29,7 +32,7 @@ public class TimeZoneService {
 
     public TimeZoneRequestDTO getByCity(String city) {
 
-        String zoneFromCache = StaticTimeZoneDAO.getInstance().getZoneByCity(city);
+        String zoneFromCache = staticTimeZoneDAO.getZoneByCity(city);
         String requestParameter = "";
 
         if (!"".equals(zoneFromCache)) {
