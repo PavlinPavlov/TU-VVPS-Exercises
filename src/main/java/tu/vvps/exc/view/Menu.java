@@ -47,6 +47,7 @@ public class Menu {
                 break;
             case 6:
                 dispatcher.changeTimeZone();
+                break;
             default:
                 System.exit(0);
                 break;
