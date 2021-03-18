@@ -1,14 +1,18 @@
 package tu.vvps.exc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Configuration {
 
+    private static final Logger logger = LoggerFactory.getLogger(Configuration.class);
     private static final String propFileName = "config.properties";
 
-    public static final String LOCAL_TIME_ZONE = "local.timezone";
+    public static final String LOCAL_TIME_ZONE = "local.offset";
 
     private final Properties properties = new Properties();
 
@@ -26,7 +30,7 @@ public class Configuration {
             }
 
         } catch (Exception e) {
-            System.out.println("Exception: " + e);
+            logger.error("Exception while configuring!", e);
         }
     }
 

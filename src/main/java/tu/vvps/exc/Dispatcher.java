@@ -1,5 +1,7 @@
 package tu.vvps.exc;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tu.vvps.exc.dao.StaticTimeZoneDAO;
 import tu.vvps.exc.service.TimeZoneService;
 
@@ -15,6 +17,8 @@ import java.util.Scanner;
 
 public class Dispatcher {
 
+    private static final Logger logger = LoggerFactory.getLogger(Dispatcher.class);
+
     private final StaticTimeZoneDAO staticTimeZoneDAO;
     private final TimeZoneService timeZoneService;
     private final Scanner scanner;
@@ -26,44 +30,45 @@ public class Dispatcher {
     }
 
     public void changeTimeZone() {
-        System.out.println("Enter TimeZone. Example Europe/Sofia. Warning, may break app!");
+        System.out.println("Enter offset. Example \"+02:30\"");
         String input = scanner.nextLine();
         DateGenerator.setTimeZone(input);
 
-        System.out.println("Current time is: " + DateGenerator.getCurrentDateTime());
+        logger.info("Current time is: {}", DateGenerator.getCurrentDateTime());
     }
 
     public void weekdayOfBirth() {
-        System.out.println("Enter Birthday. Example 1998-01-01");
+        System.out.println("Enter Birthday. Example \"1998-01-01\"");
         String input = scanner.nextLine();
         Date birthday = null;
         try {
             birthday = new SimpleDateFormat("yyyy-MM-dd").parse(input);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error("Error in input!", e);
         }
         DateFormat formatter = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-        System.out.println(formatter.format(birthday));
+        logger.info(formatter.format(birthday));
     }
 
     public void calculatePast() {
-        System.out.println("Enter Past date. Example 1998-01-01");
+        System.out.println("Enter Past date. \"Example 1998-01-01\"");
         String input = scanner.nextLine();
         LocalDate pastDate = LocalDate.parse(input);
-        System.out.println(ChronoUnit.DAYS.between(pastDate, LocalDate.now()));
+        logger.info("{} days ago.", ChronoUnit.DAYS.between(pastDate, LocalDate.now()));
     }
 
     public void calculateAge() {
         System.out.println("Enter Birthday. Example 1998-01-01");
         String input = scanner.nextLine();
         LocalDate birthday = LocalDate.parse(input);
-        System.out.println(ChronoUnit.YEARS.between(birthday, LocalDate.now()));
+        logger.info("{} years.", ChronoUnit.YEARS.between(birthday, LocalDate.now()));
     }
 
     public void calculateDifference() {
         System.out.println("Enter two cities. Example \"Europe/Sofia Europe/Madrid\"");
         String[] input = scanner.nextLine().split(" ");
-        System.out.println(timeZoneService.calculateDifferenceInMinutes(input[0], input[1]));
+        long minutesApart = timeZoneService.calculateDifferenceInMinutes(input[0], input[1]);
+        logger.info("The two cities have {} min. difference", minutesApart);
     }
 
     public void inputCityAndTimeZone() {
