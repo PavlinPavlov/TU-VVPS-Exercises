@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Locale;
@@ -66,8 +67,8 @@ public class Dispatcher {
     }
 
     public void inputCityAndTimeZone() {
-        System.out.println("Enter City and Timezone. Example \"Sofia Europe\"");
+        System.out.println("Enter City and Offset. Example \"Sofia -02:00\"");
         String[] input = scanner.nextLine().split(" ");
-        staticTimeZoneDAO.setZone(input[0], input[1]);
+        staticTimeZoneDAO.setZone(input[0], ZoneOffset.of(input[1]));
     }
 }
