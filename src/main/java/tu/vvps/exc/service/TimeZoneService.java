@@ -44,7 +44,7 @@ public class TimeZoneService {
         OffsetDateTime firstCityTime = OffsetDateTime.of(referenceTime, firstCityOffset);
         OffsetDateTime secondCityTime = OffsetDateTime.of(referenceTime, secondCityOffset);
 
-        return ChronoUnit.MINUTES.between(firstCityTime, secondCityTime);
+        return Math.abs(ChronoUnit.MINUTES.between(firstCityTime, secondCityTime));
     }
 
     private static class LazyHolder {
