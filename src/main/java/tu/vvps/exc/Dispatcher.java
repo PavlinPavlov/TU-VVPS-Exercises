@@ -38,7 +38,7 @@ public class Dispatcher {
         logger.info("Current time is: {}", DateGenerator.getCurrentDateTime());
     }
 
-    public void weekdayOfBirth() {
+    public String weekdayOfBirth() {
         System.out.println("Enter Birthday. Example \"1998-01-01\"");
         String input = scanner.read();
 
@@ -46,7 +46,7 @@ public class Dispatcher {
 
         if (!isPastDate(pastDate)) {
             logger.error("Entered date: {} is no a past date", pastDate);
-            return;
+            return input;
         }
 
         Date birthday = null;
@@ -56,40 +56,39 @@ public class Dispatcher {
             logger.error("Error in input!", e);
         }
         DateFormat formatter = new SimpleDateFormat("EEEE", Locale.ENGLISH);
-        logger.info(formatter.format(birthday));
+        return formatter.format(birthday);
     }
 
-    public void calculatePast() {
-        System.out.println("Enter Past date. \"Example 1998-01-01\"");
+    public long calculatePast() {
+        System.out.println("Enter Past date. \"Example 1998-01-20\"");
         String input = scanner.read();
         LocalDate pastDate = LocalDate.parse(input);
 
         if (!isPastDate(pastDate)) {
             logger.error("Entered date: {} is no a past date", pastDate);
-            return;
+            throw new IllegalArgumentException(String.format("Entered date: %s is no a past date", pastDate));
         }
 
-        logger.info("{} days ago.", ChronoUnit.DAYS.between(pastDate, LocalDate.now()));
+        return ChronoUnit.DAYS.between(pastDate, LocalDate.now());
     }
 
-    public void calculateAge() {
+    public long calculateAge() {
         System.out.println("Enter Birthday. Example 1998-01-01");
         String input = scanner.read();
         LocalDate birthday = LocalDate.parse(input);
 
         if (!isPastDate(birthday)) {
             logger.error("Entered date: {} is no a past date", birthday);
-            return;
+            throw new IllegalArgumentException(String.format("Entered date: %s is no a past date", birthday));
         }
 
-        logger.info("{} years.", ChronoUnit.YEARS.between(birthday, LocalDate.now()));
+        return ChronoUnit.YEARS.between(birthday, LocalDate.now());
     }
 
-    public void calculateDifference() {
+    public long calculateDifference() {
         System.out.println("Enter two cities. Example \"Europe/Sofia Europe/Madrid\"");
         String[] input = scanner.read().split(" ");
-        long minutesApart = timeZoneService.calculateDifferenceInMinutes(input[0], input[1]);
-        logger.info("The two cities have {} min. difference", minutesApart);
+        return timeZoneService.calculateDifferenceInMinutes(input[0], input[1]);
     }
 
     public void inputCityAndTimeZone() {

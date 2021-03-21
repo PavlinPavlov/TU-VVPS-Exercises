@@ -11,7 +11,7 @@ public class StaticTimeZoneDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(StaticTimeZoneDAO.class);
 
-    private final Map<String, ZoneOffset> offsetCache = new HashMap<>();
+    private Map<String, ZoneOffset> offsetCache = new HashMap<>();
 
     private StaticTimeZoneDAO() {
     }
@@ -27,6 +27,10 @@ public class StaticTimeZoneDAO {
     public void setZone(String city, ZoneOffset zone) {
         offsetCache.put(city, zone);
         logger.info("Caching offset for city {}: {}", city, zone);
+    }
+
+    public void clearCache() {
+        offsetCache = new HashMap<>();
     }
 
     private static class LazyHolder {

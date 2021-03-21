@@ -1,9 +1,13 @@
 package tu.vvps.exc.view;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tu.vvps.exc.Dispatcher;
 import tu.vvps.exc.util.ScannerWrapper;
 
 public class Menu {
+
+    private static final Logger logger = LoggerFactory.getLogger(Menu.class);
 
     private final Dispatcher dispatcher;
     private final ScannerWrapper scanner;
@@ -33,16 +37,16 @@ public class Menu {
                 dispatcher.inputCityAndTimeZone();
                 break;
             case 2:
-                dispatcher.calculateDifference();
+                logger.info("The two cities have {} min. difference", dispatcher.calculateDifference());
                 break;
             case 3:
-                dispatcher.calculatePast();
+                logger.info("{} days ago.", dispatcher.calculatePast());
                 break;
             case 4:
-                dispatcher.calculateAge();
+                logger.info("{} years.", dispatcher.calculateAge());
                 break;
             case 5:
-                dispatcher.weekdayOfBirth();
+                logger.info(dispatcher.weekdayOfBirth());
                 break;
             case 6:
                 dispatcher.changeTimeZone();
