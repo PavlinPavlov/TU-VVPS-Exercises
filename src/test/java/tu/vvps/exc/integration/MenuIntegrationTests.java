@@ -4,68 +4,140 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import tu.vvps.exc.Dispatcher;
+import tu.vvps.exc.TestConstants;
 import tu.vvps.exc.dao.StaticTimeZoneDAO;
 import tu.vvps.exc.service.TimeZoneService;
 import tu.vvps.exc.util.ScannerWrapper;
 import tu.vvps.exc.view.Menu;
 
-import java.time.ZoneOffset;
+import static org.mockito.Mockito.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+public class MenuIntegrationTests {
 
-public class IntegrationTests {
-
-    private static final String TEST_OFFSET_1 = "-04:00";
-    private static final String TEST_OFFSET_2 = "+02:00";
-    private static final String TEST_CITY_1 = "Oklahoma";
-    private static final String TEST_CITY_2 = "Gabrovo";
-
-    private Dispatcher dispatcher;
+    private Dispatcher dispatcherSpy;
     private Menu menu;
     private ScannerWrapper scannerMock;
-    private StaticTimeZoneDAO staticTimeZoneDAO;
-    private TimeZoneService timeZoneService;
+
 
     @BeforeEach
     private void setUp() {
         scannerMock = Mockito.mock(ScannerWrapper.class);
 
-        dispatcher = new Dispatcher(TimeZoneService.getInstance(), StaticTimeZoneDAO.getInstance(), scannerMock);
-        menu = new Menu(dispatcher, scannerMock);
-        staticTimeZoneDAO = StaticTimeZoneDAO.getInstance();
-        timeZoneService = TimeZoneService.getInstance();
-
-        staticTimeZoneDAO.clearCache();
+        Dispatcher dispatcher = new Dispatcher(TimeZoneService.getInstance(), StaticTimeZoneDAO.getInstance(), scannerMock);
+        dispatcherSpy = Mockito.spy(dispatcher);
+        menu = new Menu(dispatcherSpy, scannerMock);
     }
 
     @Test
-    void givenCityAndTimezone_whenSearching_shouldFind() {
+    void givenChoice1_whenDispatching_shouldCallProperMethod() {
+        // Mock
         when(scannerMock.readInt()).thenReturn(1);
-        when(scannerMock.read()).thenReturn(TEST_CITY_1 + " " + TEST_OFFSET_1);
+        when(scannerMock.read()).thenReturn("Sofia -02:00");
 
+        // Invoke
         menu.executeChoice();
 
-        ZoneOffset oklahoma = staticTimeZoneDAO.getZoneByCity(TEST_CITY_1);
-        assertEquals(TEST_OFFSET_1, oklahoma.getId());
+        // Verify
+        verify(dispatcherSpy, times(1)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(0)).calculateDifference();
+        verify(dispatcherSpy, times(0)).calculatePast();
+        verify(dispatcherSpy, times(0)).calculateAge();
+        verify(dispatcherSpy, times(0)).weekdayOfBirth();
+        verify(dispatcherSpy, times(0)).changeTimeZone();
+
     }
 
     @Test
-    void givenTwoCities_whenCalculatingDifference_shouldCalculate() {
+    void givenChoice2_whenDispatching_shouldCallProperMethod() {
+        // Mock
+        when(scannerMock.readInt()).thenReturn(2);
+        when(scannerMock.read()).thenReturn("Europe/Sofia Europe/Madrid");
 
-//        // Set up
-//        staticTimeZoneDAO.setZone(TEST_CITY_1, ZoneOffset.of(TEST_OFFSET_1));
-//        staticTimeZoneDAO.setZone(TEST_CITY_2, ZoneOffset.of(TEST_OFFSET_2));
-//
-//        // Mock
-//        when(scannerMock.readInt()).thenReturn(2);
-//        when(scannerMock.read()).thenReturn(TEST_CITY_1 + " " + TEST_CITY_2);
-//
-//        menu.executeChoice();
-//
-//
-//        assertEquals(TEST_OFFSET_1, oklahoma.getId());
+        // Invoke
+        menu.executeChoice();
+
+        // Verify
+        verify(dispatcherSpy, times(0)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(1)).calculateDifference();
+        verify(dispatcherSpy, times(0)).calculatePast();
+        verify(dispatcherSpy, times(0)).calculateAge();
+        verify(dispatcherSpy, times(0)).weekdayOfBirth();
+        verify(dispatcherSpy, times(0)).changeTimeZone();
+
     }
 
+    @Test
+    void givenChoice3_whenDispatching_shouldCallProperMethod() {
+        // Mock
+        when(scannerMock.readInt()).thenReturn(3);
+        when(scannerMock.read()).thenReturn(TestConstants.PAST_DATE);
 
+        // Invoke
+        menu.executeChoice();
+
+        // Verify
+        verify(dispatcherSpy, times(0)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(0)).calculateDifference();
+        verify(dispatcherSpy, times(1)).calculatePast();
+        verify(dispatcherSpy, times(0)).calculateAge();
+        verify(dispatcherSpy, times(0)).weekdayOfBirth();
+        verify(dispatcherSpy, times(0)).changeTimeZone();
+
+    }
+
+    @Test
+    void givenChoice4_whenDispatching_shouldCallProperMethod() {
+        // Mock
+        when(scannerMock.readInt()).thenReturn(4);
+        when(scannerMock.read()).thenReturn(TestConstants.PAST_DATE);
+
+        // Invoke
+        menu.executeChoice();
+
+        // Verify
+        verify(dispatcherSpy, times(0)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(0)).calculateDifference();
+        verify(dispatcherSpy, times(0)).calculatePast();
+        verify(dispatcherSpy, times(1)).calculateAge();
+        verify(dispatcherSpy, times(0)).weekdayOfBirth();
+        verify(dispatcherSpy, times(0)).changeTimeZone();
+
+    }
+
+    @Test
+    void givenChoice5_whenDispatching_shouldCallProperMethod() {
+        // Mock
+        when(scannerMock.readInt()).thenReturn(5);
+        when(scannerMock.read()).thenReturn(TestConstants.PAST_DATE);
+
+        // Invoke
+        menu.executeChoice();
+
+        // Verify
+        verify(dispatcherSpy, times(0)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(0)).calculateDifference();
+        verify(dispatcherSpy, times(0)).calculatePast();
+        verify(dispatcherSpy, times(0)).calculateAge();
+        verify(dispatcherSpy, times(1)).weekdayOfBirth();
+        verify(dispatcherSpy, times(0)).changeTimeZone();
+
+    }
+
+    @Test
+    void givenChoice6_whenDispatching_shouldCallProperMethod() {
+        // Mock
+        when(scannerMock.readInt()).thenReturn(6);
+        when(scannerMock.read()).thenReturn(TestConstants.TEST_OFFSET_1);
+
+        // Invoke
+        menu.executeChoice();
+
+        // Verify
+        verify(dispatcherSpy, times(0)).inputCityAndTimeZone();
+        verify(dispatcherSpy, times(0)).calculateDifference();
+        verify(dispatcherSpy, times(0)).calculatePast();
+        verify(dispatcherSpy, times(0)).calculateAge();
+        verify(dispatcherSpy, times(0)).weekdayOfBirth();
+        verify(dispatcherSpy, times(1)).changeTimeZone();
+    }
 }
