@@ -49,18 +49,13 @@ public class DispatcherIntegrationTests {
 
     @Test
     void givenTwoCities_whenCalculatingDifference_shouldCalculate() {
-
-        // Set up
-        staticTimeZoneDAO.setZone(TestConstants.TEST_CITY_1, ZoneOffset.of(TestConstants.TEST_OFFSET_1));
-        staticTimeZoneDAO.setZone(TestConstants.TEST_CITY_2, ZoneOffset.of(TestConstants.TEST_OFFSET_2));
-
         // Mock
-        when(scannerMock.read()).thenReturn(TestConstants.TEST_CITY_1 + " " + TestConstants.TEST_CITY_2);
+        when(scannerMock.read()).thenReturn(TestConstants.TEST_TIMEZONE_1 + " " + TestConstants.TEST_TIMEZONE_2);
 
         // Invoke
         long days = dispatcher.calculateDifference();
 
-        assertEquals(TestConstants.MINUTES_DIFF, days);
+        assertEquals(TestConstants.MINUTES_DIFF_FOR_TIMEZONES, days);
     }
 
     @Test
