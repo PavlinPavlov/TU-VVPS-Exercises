@@ -1,7 +1,8 @@
-package tu.vvps.exc;
+package tu.vvps.exc.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tu.vvps.exc.Configuration;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;

@@ -1,17 +1,16 @@
 package tu.vvps.exc.view;
 
 import tu.vvps.exc.Dispatcher;
-
-import java.util.Scanner;
+import tu.vvps.exc.util.ScannerWrapper;
 
 public class Menu {
 
     private final Dispatcher dispatcher;
-    private final Scanner scanner;
+    private final ScannerWrapper scanner;
 
-    public Menu(Dispatcher dispatcher) {
+    public Menu(Dispatcher dispatcher, ScannerWrapper scanner) {
         this.dispatcher = dispatcher;
-        this.scanner = new Scanner(System.in);
+        this.scanner = scanner;
     }
 
     public void printMenu() {
@@ -27,7 +26,7 @@ public class Menu {
     }
 
     public void executeChoice() {
-        int choice = Integer.parseInt(scanner.nextLine());
+        int choice = scanner.readInt();
 
         switch (choice) {
             case 1:
