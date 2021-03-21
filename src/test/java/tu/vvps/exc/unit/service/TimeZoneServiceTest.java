@@ -1,4 +1,4 @@
-package tu.vvps.exc.service;
+package tu.vvps.exc.unit.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.FieldSetter;
 import tu.vvps.exc.dao.StaticTimeZoneDAO;
+import tu.vvps.exc.service.TimeZoneService;
 
 import java.time.Instant;
 import java.time.ZoneId;

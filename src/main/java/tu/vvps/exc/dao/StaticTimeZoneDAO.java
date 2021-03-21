@@ -1,4 +1,4 @@
-package tu.vvps.exc.dao;
+package tu.vvps.exc.unit.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

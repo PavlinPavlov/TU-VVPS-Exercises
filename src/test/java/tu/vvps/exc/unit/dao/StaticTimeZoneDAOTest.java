@@ -1,4 +1,4 @@
-package tu.vvps.exc.dao;
+package tu.vvps.exc.unit.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
